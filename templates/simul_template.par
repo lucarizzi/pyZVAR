@@ -1,0 +1,298 @@
+.# Questo file contiene i parametri per generare un CMD sintetico
+# Viene fatto un grep delle cose che servono, dunque quasi tutto 
+# viene ignorato
+# (c) 1999 I.Saviane
+# (c) 2003 L. Rizzi (modificato per funzionare con il nuovo Zvar)
+#
+# Il formato delle linee e'
+#    @VARIABILE descrizione :valore
+#
+# E' essenziale che ci sia @VARIABILE e _un solo_ ":" nella linea
+# Ovvero:se ce ne sono diversi, prende il valore che segue
+# immediatamente il primo. Utile dunque per lasciare diverse
+# scelte commentate
+#
+# Al momento ci sono le seguenti sezioni (cercare @@@)
+#
+#   4. PARAMETRI DELLA STAR FORMATION 
+#   5. PARAMETRI DELLA Z = F(T) 
+#   6. IMF 
+#   7. BINARIE ET AL. 
+#   8. CONTROLLO
+#   9. LIMITI
+# 100. PROGRAM INTERNAL WORKING 
+#
+
+
+# 4. PARAMETRI DELLA STAR FORMATION @@@
+   #
+   # Il tipo di SF va scelto tra questi valori:
+   #     0 star formation costante nel tempo
+   #     1 burst limitato nel tempo
+   #     2 formazione stellare esponenziale (lookback)
+   #     3 star formation crescente linearmente nel tempo
+   #     4 burst limitato nel tempo sovrapposto ad una s.f.r costante
+   #     5 burst limitato nel tempo sovrapposto ad una s.f.r cost 
+   #       in modo che il rap tra area burst/area cost=beta
+   #     6 eta precisa senza dispersione
+   #     8 star formation esponenziale +burst
+   #     9 namelist=sfr_cost_piu_burst_qualunque9
+   #    11 star formation esponenziale decre+burst espon decre  
+   #    12 star formation esponenziale decre+burst espon decre
+   #
+   @tipoSF   tipo di star formation:1
+   #
+   # a seconda della scelta del tipo di SF, settare i suoi
+   # parametri corrisponenti. Si identificano in quanto i
+   # blocchi sono commentati a sx con il tipo di SF stesso
+   # Mancano i blocchi corrispondenti a SF=10,33 ma pare
+   # che tutto funzioni lo stesso
+   #-----------------------------------------------------
+   0  @TCOSTMAX :15e9
+   #-----------------------------------------------------
+   1 @TburstMax :age2
+   1 @TburstMin :age1
+   #-----------------------------------------------------
+   2     @TEMAX :15e9
+   2     @TEMIN :1.0E7
+   2    @EBBETA :2.0
+   #-----------------------------------------------------
+   3   @TINCMAX :16e9
+   3   @TINCMIN :14e9
+   3    @AAYMAX :8
+   3    @AAYMIN :1
+   #-----------------------------------------------------
+   4    @TCBMAX :15e9
+   4   @TCBINTE :1e9
+   4    @TCBMIN :2e7
+   4     @TCRAP :0.3
+   4   @AAYYMAX :3.1e9
+   4    @DPASSO :1e9
+   4     @RAPUP :0.7
+   4      @DRAP :0.3
+   #-----------------------------------------------------
+   5   @TCBAMAX :13e9
+   5  @TCBAINTE :1e9
+   5   @TCBAMIN :2e8
+   5     @RAREE :2
+   #-----------------------------------------------------
+   6      @Tssp :15e9
+   #-----------------------------------------------------
+   8
+   8 PER QUANTO RIGUARDA ESPON_BURST SI PUO' USARE ANCHE UNA BETA
+   8 NEGATIVA:IN QUESTO CASO LA FORZA DEL BURST NON E' PIU'
+   8 MOLTIPLICATA PER EXP(BETA), MA E' SEMPLICEMENTE UNA FRAZIONE 
+   8 DELL'UNITA'
+   8
+   8    @TEBMAX :60e6
+   8    @TEBMIN :35e6
+   8   @EBBBETA :0.5
+   8   @TEBBMAX :45e6
+   8   @TEBBMIN :40e6
+   8    @FBURST :0.5
+   #-----------------------------------------------------
+   9   @TCBQMAX :13e9
+   9   @TCBQMIN :1e9
+   9  @TCBQBMAX :7e9
+   9  @TCBQBMIN :5e9
+   9    @FORZAB :3
+   #-----------------------------------------------------
+   11
+   11 AGGIUNGE UN BURST CHE DECRESCE ESPONENZIALMENTE TRA TBURSTMAX E TBURSTMIN
+   11 IL VALORE MASSIMO DELLA FUNZIONE (RELATIVAMENTE AL BURST) HA LUOGO NEL PUNTO
+   11 TBURSTMAX E VALE:FORZA_DEL_BURST*(EXP(BBETA*T2N)) DOVE
+   11 T2N=(TBURSTMAX-TMIN)/(TMAX-TMIN)
+   11
+   11    @TDEDMAX :9.0e9
+   11    @TDEDMIN :2e7
+   11    @DEDBETA :2
+   11   @TDEDBMAX :1.0e9
+   11   @TDEDBMIN :2e7
+   11  @DEDFBURST :3.0
+   11  @DEDBBURST :1.50
+   11 @DEDAAYYMAX :9.0e9
+   11  @DEDDPASSO :2.e9
+   11   @DEDRAPUP :7.
+   11    @DEDDRAP :3.
+   #-----------------------------------------------------
+   12 AGGIUNGE UN BURST CHE DECRESCE ESPONENZIALMENTE TRA TBURSTMAX E TBURSTMIN
+   12 IL VALORE MASSIMO DELLA FUNZIONE (RELATIVAMENTE AL BURST) HA LUOGO NEL PUNTO
+   12 TBURSTMAX E VALE:FORZA_DEL_BURST*(EXP(BBETA*T2N)) DOVE
+   12 T2N=(TBURSTMAX-TMIN)/(TMAX-TMIN)
+   12
+   12      @TDDMAX :9.0e9
+   12      @TDDMIN :2e7
+   12     @DDBBETA :0.001              
+   12     @TDDBMAX :5.0E9
+   12     @TDDBMIN :2E7 
+   12    @DDFBURST :9.0 
+   12 @DDBETABURST :1.0
+   12   @DDAAYYMAX :6.0e9
+   12    @DDDPASSO :2.e9
+   12     @DDRAPUP :10.
+   12      @DDDRAP :3.  
+   12
+
+# 5. PARAMETRI DELLA Z = F(T) @@@
+   #
+   # Il tipo di legge va scelto tra i seguenti (da Bertelli):
+   #
+   #  1 interpola linearmente tra agemin e agedisp passando 
+   #    da zb1 a zb2 (come funzionava prima)
+   #
+   #  3 interpola logaritmicamente tra agemin e agedisp 
+   #    passando da zb1 a zb2 (come funzionava prima)
+   #
+   #  2 znod e' chiaramente crescente mentre tnod e' decrescente
+   #         interpola linearmente tra znod(i-1)-znod(i) 
+   #         nell'intervallo di eta' tnod(i-1) e tnod(i).
+   #
+   @LEGGEDIZETA :1
+   #
+   # LINZ=N :esegue normalmente seguendo il caso itipo=1 o itipo=3
+   # LINZ=D :se itipo=1 sceglie casualmente la z nell'intervallo 
+   #          zb1-zb2 se itipo=3 sceglie casualmente la z nel log 
+   #          dell'intervallo zb1-zb2  
+   #
+   @LINZ :N
+   #
+   @ZB1        :met1
+   @ZB2        :met2
+   #
+   @NPLDIZETA  :3
+   @ZNOD1      :0.0001
+   @ZNOD2      :0.002
+   @ZNOD3      :0.01
+   @TNOD1      :14E9
+   @TNOD2      :10.67E9
+   @TNOD3      :0
+
+
+# 6. IMF @@@
+   #
+   # Il tipo di IMF va scelto tra i seguenti:
+   #
+   # 1   usa una funzione del tipo m**-alf in tutto 
+   #        il range delle masse
+   # 2   usa m**-alfa1 tra am1 e amx e m**-alfa2 tra amx e am2
+   #
+   @IFUNM  :3
+   #
+   @ALF_   :2.35
+   @ALFA0  :1.3
+   @ALFA1  :2.35
+   @ALFA2  :2.35
+   @_AM0   :0.15
+   @AAMM1  :0.5
+   @_AMX   :1.0
+
+# 7. BINARIE ET AL. @@@
+   #
+   # Questi parametri non sono del tutto chiari 
+   # "si'" si dice Y o S qui sotto?
+   @FLAG_DOUBLE Considero le binarie?:N
+   @NFASCEBINV  Numero di fasce di magnitudine? :11
+   @VBINV	Limiti delle fasce?		:-5,0.5,1.5,1.75,2.25,2.75,3.25,3.75,4.25,5.15,
+   @PERCBIN     Frazione per ogni fascia?	:0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,
+   @NFASCEQ	Numero di fasce di frazione?	:7
+   @FRAQ	Peso di ogni frazione?		:6,6,6,6,6,6,6,
+   @XQ		Valori in ogni frazione?	:0.45,0.55,0.65,0.75,0.85,0.95,1.0,
+
+
+
+
+   #
+   # ISSEP=0 LA RETTA NON E' PRESA IN CONSIDERAZIONE E QUANDO NEL NAMELIST
+   #         CONTROLLO E' QNRED=Y  PRENDE IN CONSIDERAZIONE SOLO LE STELLE
+   #         ROSSE EVOLUTE (NON QUELLE DEFINITE DALLA RETTA)          
+   # ISSEP=1 LA RETTA E' USATA PER DEFINIRE LE STELLE ROSSE E BLU
+   #
+   @ISSEP       :0
+   @QDISTR      :Y
+   @DISMVMI     :-5
+   @DISMVMA     :3.5
+   @DISDIV      :0.5
+   @KR          :0
+   @VINFRED     :3.5
+
+# 8. CONTROLLO @@@
+   #
+   # QNTOT SI RIFERISCE AL NUMERO TOTALE DI STELLE
+   # QNINTE=Y :IL CONTROLLO E' FATTO SUL NUMERO DI STELLE LA CUI MAGV E' COMPRESA
+   #          TRA AMINF ED AMSUP. SE ATIPO=BLU LE STELLE CHE CONSIDERA SONO LE BLU,
+   #           MENTRE SE ATIPO E' RED LE STELLE CHE CONSIDERA SONO LE STELLE ROSSE
+   #           INDIVIDUATE DALLA RETTA (ISSEP=1). QNINTE=Y DEVE OPERARE CON ISSEP=1
+   #           SE QUESTO NON ACCADE C'E UN CONTROLLO CHE CHIAMA LA EXIT.
+   # QNRED=Y   SE ISSEP=0 NREDMAX RAPPRESENTA IL NUMERO TOTALE DI STELLE EVOLUTE
+   #           SE ISSEP=1 NREDMAX RAPPRESENTA IL NUM TOT DI STELLE ROSSE DEFINITE
+   #           DALLA RETTA
+   # QNCEPH=Y  SI RIFERISCE AL NUMERO DI CEFEIDI RICERCATE TRA LE STELLE EVOLUTE
+   #           COR_BOL=PD:STREEP DEFINITA CON LE CORREZIONI DI PADOVA       
+   #           COR_BOL=YA:STREEP DEFINITA CON LE CORREZIONI DI YALE
+   # CONTWR=Y  IN QUESTO CASO TIENE CONTO DELLA FASE WR NEL SENSO CHE CONSIDERA 
+   #           LA MAGV E LA MAGB DELLA STELLA WR (ANCHE SE NON SONO LE STESSE
+   #           DELLE ALTRE MAGNITUDINI A BANDA LARGA) LE SOMMA AI FLUSSI B E V, E 
+   #           LE CONTEGGIA COME STELLE (ROSSE) EVOLUTE. SE CONTWR=N PONE TUTTE
+   #           MAG =20 E NON TIENE CONTO DELLE WR IN NESSUN MODO.   
+   #
+    @ISEED              :9635
+    @NTOTSTARMAX	:4000
+    @QNTOT              :N
+    @QNINTE             :Y
+    @AMINF             :-5
+    @AMSUP             :5
+   @QNRED              :N
+    @NREDMAX            :0
+    @NBLUMAX		:0
+    @QN_BOX             :N
+    @NBoxMax		:0
+    @NzonaNorm		:14
+   @BBV1        :0.006
+   @_AMV1       :-2
+   @BBV2        :0.020
+   @_AMV2       :3
+
+
+# 9. LIMITI @@@
+   #
+   # AQAM1=Y SCEGLIE LE MASSE AL DI SOPRA DI AM1CAMBIATO ANZICHE' AL DI SOPRA
+   #       DEL VALORE AMM1 CHE RAPPRESENTA LA MASSA MINIMA LETTA NEL FILE DEI
+   #       DATI TRAK...... LA PRIMA VOLTA PERO (IPRO=1) TIENE CONTO DEI FLUSSI
+   #       CHE PROVENGONO DALLE STELLE CON MASSA MINORE DI AM1CAMBIATO ANCHE SE
+   #       QUEST'ULTIME NON VENGONO CONTEGGIATE (IN ITER2).
+   # AQAM2=Y  SCEGLIE LE MASSE AL DI SOTTO DEL VALORE AM2CAMBIATO, ALTRIMENTI
+   #       TIENE IL VALORE CHE VIENE DALLA MASSA MASSIMA PRESENTE NEL FILE
+   #       TRAK.....           
+   # QVLIM=Y NON CONTEGGIA LE STELLE (IN ITER2) CON MAGV MAGGIORE DI MAG_LIMITE;
+   #       SE NE  TIENE CONTO INVECE NEI FLUSSI NEI VARI COLORI CHE PROVENGONO 
+   #       DA QUESTE STELLE.
+   # QMSEP=Y CAMBIA LA MASSA DI SEPARAZIONE (CHE VIENE LETTA NEL FILE TRAK...)
+   # AMLOW MASSA DI SEP TRA L'USO DI STELLELOW E STELLEBASSASEQ
+   #
+   @AQAM1           :Y
+   @_AM1CAMBIATO    :0.5
+   @AQAM2           :Y
+   @_AM2CAMBIATO    :25
+   @QVLIM           :V
+   @LimMag          :4
+   @AMLOW          :0.6
+
+
+
+
+# 100. PROGRAM INTERNAL WORKING @@@ 
+   # Ho cambiato tattica. Questa variabile viene creata direttamente
+   # da simulazione.sh con un find dei file opportuni
+   @DATABASE_DIR   Dove si trovano le tracce evolutive? ::# ~/database/datisocn
+   #              (               Non lasciare spazi qui ^ )
+   #
+      @ILOS :0
+   @RGBLOSS :1
+    @RGBETA :0.35
+   @AGBLOSS :5
+    @AGBETA :0.35
+    @IHBOLD :2
+     @IMDOT :2
+   @MLENGTH :1.68
+    @ISHIFT :2
+

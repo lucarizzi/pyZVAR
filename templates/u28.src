@@ -1,0 +1,98 @@
+  @ILOS ILOS ! SE<5 TUTTO NORM,SE =5 NO MASLOS LUNGO RG,SE =7 NO MASLOSS
+  @RGBLOSS @RGBETA imaslos   ETAREN
+  @AGBLOSS @AGBETA imaslosAGB etalossAGB
+  @IHBOLD @IMDOT   itefl (in mdothbold) itefh(in mdot) 1=old  2=(Tef-L)Wood
+  @MLENGTH         ALPH(MIXXINGLENGHT)     
+  @ISHIFT              ! iscift=0 niente iscift=1 scift solo 0.7 m iscift=2 scift tutte        
+      7            NZMAX           
+      0.0001 0.230   0.6 120  1.75  0.075 ! ZETA  XHE   M1  M2 MHeflash                            
+      0.0004 0.230   0.6 120  1.7   0.075 ! ZETA XHE M1 M2 Mflash ALFA=COEF ANG AGB (IBEN=0.0643)  
+      0.001  0.230   0.6  30  1.7   0.12  ! ZETA  XHE   M1  M2 MHeflash ALFA                       
+      0.004  0.240   0.6 120  1.7   0.12  ! ZETA  XHE   M1  M2 MHeflash ALFA                       
+      0.008  0.250   0.6 120  1.85  0.15  ! ZETA  XHE   M1  M2 MHeflash ALFA                       
+      0.019  0.273   0.6 120  1.95  0.15  ! ZETA  XHE   M1  M2 MHeflash ALFA                       
+      0.03   0.300   0.6 120  1.9   0.15  ! ZETA  XHE   M1  M2 MHeflash ALFA 
+
+
+ $FILEINGRESSO  
+         u8='u8.1'  u26='u26_pb.5' u10='u10leo.1' u29='u29leo.1' $END  
+
+
+ $TIPOSFR 
+               IISTARFORM=@tipoSF                       $END 
+ $TSHARPI6      
+            TTTT=@Tssp                                $END 
+ $TBURSTI1  
+           TMAX=@TburstMax,  TMIN=@TburstMin                    $END 
+ $TCOSTI0 
+           TMAX=@TCOSTMAX                                 $END 
+ $T_INCRIS_LINI3 
+          TMAX=@TINCMAX, TMIN=@TINCMIN, AAYMAX=@AAYMAX,  AAYMIN=@AAYMIN     $END 
+ $SFR_COST_PIU_BURSTI4 
+          TMAX=@TCBMAX, TINTE=@TCBINTE, TMIN=@TCBMIN, RAP=@TCRAP     
+          AAYYMAX=@AAYYMAX, DPASSO=@DPASSO, rapup=@RAPUP , drap=@DRAP        $END 
+ $SFR_COST_PIU_BURST_PIU_AREAI5   
+          TMAX=@TCBAMAX, TINTE=@TCBAINTE, TMIN=@TCBAMIN, RAREE=@RAREE    $END 
+ $SFR_ESPONI2 
+          TMAX=@TEMAX, TMIN=@TEMIN, BBETA=@EBBETA                $END 
+ $SFR_ESPON_BURSTI8 
+          TMAX=@TEBMAX, TMIN=@TEBMIN, BBETA=@EBBBETA                
+          TBURSTMAX=@TEBBMAX TBURSTMIN=@TEBBMIN FORZA_DEL_BURST=@FBURST  $END 
+ $SFR_COST_PIU_BURST_QUALUNQUE9 
+          TMAX=@TCBQMAX, TMIN=@TCBQMIN, TBMAX=@TCBQBMAX, TBMIN=@TCBQBMIN, 
+          FORZAB=@FORZAB,                                  $END  
+ 
+ 
+ $SFR_DUEESP_DECREI11 
+     TMAX=@TDEDMAX, TMIN=@TDEDMIN, BBETA=@DEDBETA                
+     TBURSTMAX=@TDEDBMAX TBURSTMIN=@TDEDBMIN  
+     FORZA_DEL_BURST=@DEDFBURST  BETABURST=@DEDBBURST 
+          AAYYMAX=@DEDAAYYMAX, DPASSO=@DEDDPASSO, rapup=@DEDRAPUP, drap=@DEDDRAP        $END 
+ 
+ 
+ $SFR_DUEESP_DECREI12 
+     TMAX=@TDDMAX, TMIN=@TDDMIN, BBETA=@DDBBETA               
+     TBURSTMAX=@TDDBMAX TBURSTMIN=@TDDBMIN  
+     FORZA_DEL_BURST=@DDFBURST  BETABURST=@DDBETABURST 
+          AAYYMAX=@DDAAYYMAX, DPASSO=@DDDPASSO, rapup=@DDRAPUP, drap=@DDDRAP        $END 
+ 
+ 
+ $LEGGEDIZETA 
+     ITIPO=@LEGGEDIZETA LINZ='@LINZ'   ZB1=@ZB1      ZB2=@ZB2 
+        NPUNTI=@NPLDIZETA  ZNOD=@ZNOD1,@ZNOD2,@ZNOD3 
+                  TNOD=@TNOD1,@TNOD2,@TNOD3            $END 
+ 
+ 
+ $SALPETER 
+    IFUNM=@IFUNM 
+           ALF=@ALF_,   
+    alfa0=@ALFA0,         ALFA1=@ALFA1,    ALFA2=@ALFA2,    
+    am0=@_AM0, aamm1=@AAMM1,   AMX=@_AMX 
+                                               $END 
+ 
+ 
+ $BINARIE  
+     DOUBLE='@FLAG_DOUBLE', NFASCEBINV=@NFASCEBINV, 
+      VBINV=@VBINV 
+      PERCBIN=@PERCBIN 
+      NFASCEQ=@NFASCEQ, 
+      FRAQ=@FRAQ 
+      XQ=@XQ 
+      $END 
+ 
+ 
+ $CONTROLLO 
+ ISEED=@ISEED 
+ QNTOT='@QNTOT'    NTOTSTARMAX=@NTOTSTARMAX 
+ QNINTE='@QNINTE'   NBLUMAX=@NBLUMAX NREDMAX=@NREDMAX AMINF=@AMINF AMSUP=@AMSUP 
+ QN_BOX='@QN_BOX'   NBOX_MAX=@NBoxMax    JZONE=@NzonaNorm 
+ BBV1=@BBV1, AMV1=@_AMV1, BBV2=@BBV2, AMV2=@_AMV2   $END 
+ 
+ 
+ $LIMITI 
+     AQAM1='@AQAM1'    AM1CAMBIATO=@_AM1CAMBIATO 
+     AQAM2='@AQAM2'    AM2CAMBIATO=@_AM2CAMBIATO 
+     QVLIM='@QVLIM'    MAG_LIMITE=@LimMag 
+     AMLOW=@AMLOW $END
+ 
+ 

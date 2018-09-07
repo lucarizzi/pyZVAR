@@ -102,3 +102,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+simulate_0_1.par simulate_10_12.par simulate_12_14.par simulate_14_16.par simulate_1_2.par simulate_2_3.par simulate_3_4.par simulate_4_6.par simulate_6_8.par simulate_8_10.par
+simulate_0_1.output simulate_10_12.output simulate_12_14.output simulate_14_16.output simulate_1_2.output simulate_2_3.output simulate_3_4.output simulate_4_6.output simulate_6_8.output simulate_8_10.output
