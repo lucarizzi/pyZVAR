@@ -1,0 +1,9 @@
+#
+/Users/lrizzi/Work/SIMUL_LINUX/prog.mac/zvar_opti.exe << EOF
+0.1
+cmd_mixer.dat
+zone.bertelli
+opt_cmd_dati.dat
+2 1
+2 1
+EOF
